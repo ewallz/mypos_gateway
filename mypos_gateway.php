@@ -37,7 +37,6 @@ register_language_files(MYPOS_GATEWAY_MODULE_NAME, [MYPOS_GATEWAY_MODULE_NAME]);
  * Actions for inject the custom styles
  */
 hooks()->add_filter('module_mypos_gateway_action_links', 'module_mypos_gateway_action_links');
-hooks()->add_action('admin_init', 'mypos_gateway_init_menu_items');
 
 /**
  * Add additional settings for this module in the module list area
@@ -46,26 +45,9 @@ hooks()->add_action('admin_init', 'mypos_gateway_init_menu_items');
  */
 function module_mypos_gateway_action_links($actions)
 {
-    $actions[] = '<a href="' . admin_url('mypos_gateway') . '">' . _l('settings') . '</a>';
+    $actions[] = '<a href="' . admin_url('settings?group=payment_gateways') . '">' . _l('settings') . '</a>';
 
     return $actions;
 }
 
-/**
- * Init theme style module menu items in setup in admin_init hook
- * @return null
- */
-function mypos_gateway_init_menu_items()
-{
-    if (is_admin()) {
-        $CI = &get_instance();
-        /**
-         * If the logged in user is administrator, add custom menu in Setup
-         */
-        $CI->app_menu->add_setup_menu_item('mypos-gateway', [
-            'href'     => admin_url('mypos_gateway'),
-            'name'     => _l('mypos_gateway'),
-            'position' => 66,
-        ]);
-    }
-}
+register_payment_gateway('mypos_gateway', 'mypos_gateway');
